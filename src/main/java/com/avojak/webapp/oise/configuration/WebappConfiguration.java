@@ -3,9 +3,13 @@ package com.avojak.webapp.oise.configuration;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.linkedin.urls.detection.UrlDetector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class WebappConfiguration {
@@ -43,6 +48,14 @@ public class WebappConfiguration {
 	public ListeningExecutorService executorService() {
 		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("crawler-%d").build();
 		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
+	}
+
+	@Bean
+	public RestTemplate restTemplate() {
+		int timeout = 5000; // Timeout in milliseconds
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+		clientHttpRequestFactory.setConnectTimeout(timeout);
+		return new RestTemplate();
 	}
 
 }
