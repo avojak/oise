@@ -1,13 +1,12 @@
 package com.avojak.webapp.oise.configuration;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.linkedin.urls.detection.UrlDetector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,8 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * Handles the application configuration.
+ */
 @Configuration
 public class WebappConfiguration {
 
@@ -44,10 +45,21 @@ public class WebappConfiguration {
 		return new WebappProperties(servers);
 	}
 
-	@Bean
-	public ListeningExecutorService executorService() {
+	@Bean(name = "CrawlerExecutorService")
+	public ListeningExecutorService crawlerExecutorService() {
 		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("crawler-%d").build();
 		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
+	}
+
+	@Bean(name = "IndexerExecutorService")
+	public ListeningExecutorService indexerExecutorService() {
+		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("indexer-%d").build();
+		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
+	}
+
+	@Bean
+	public EventBus eventBus() {
+		return new EventBus();
 	}
 
 	@Bean

@@ -1,4 +1,4 @@
-package com.avojak.webapp.oise.service;
+package com.avojak.webapp.oise.service.bot;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;
@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Implementation of {@link PircBot} to crawl a given server for the channels it contains.
+ */
 public class CrawlerBot extends PircBot {
 
 	final AtomicBoolean isCrawling = new AtomicBoolean(false);

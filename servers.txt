@@ -1,2 +1,1 @@
-localhost
 irc.freenode.net

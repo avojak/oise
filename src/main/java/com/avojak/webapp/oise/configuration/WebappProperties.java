@@ -4,6 +4,9 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Models the configurable application properties.
+ */
 public class WebappProperties {
 
 	private final List<String> servers;
