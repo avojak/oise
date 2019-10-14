@@ -4,6 +4,12 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.IndexDeletionPolicy;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,8 +86,11 @@ public class WebappConfiguration {
 	}
 
 	@Bean
-	public Directory directory() throws IOException {
-		return FSDirectory.open(new File(indexDirectory).toPath());
+	public IndexWriter indexWriter() throws IOException {
+		// TODO: Update this configuration so that we append to an index if one already exists
+		final Directory directory = FSDirectory.open(new File(indexDirectory).toPath());
+		final IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+		return new IndexWriter(directory, config);
 	}
 
 }

@@ -6,10 +6,9 @@ COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY ${DEPENDENCY}/META-INF /app/META-INF
 COPY ${DEPENDENCY}/BOOT-INF/classes /app
 COPY servers.txt /
-COPY docker-entrypoint.sh /
 
 RUN mkdir /lucene-index
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
+ENTRYPOINT [ "java", "-cp", "app:app/lib/*", "com.avojak.webapp.oise.Application", "--oise.serversfile=/servers.txt", "--oise.index.directory=/lucene-index" ]

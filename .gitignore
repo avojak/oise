@@ -1,4 +1,5 @@
 .idea/
 *.iml
 
+lucene-index/
 target/

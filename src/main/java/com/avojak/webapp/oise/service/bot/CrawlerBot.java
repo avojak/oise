@@ -2,6 +2,8 @@ package com.avojak.webapp.oise.service.bot;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,10 +16,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class CrawlerBot extends PircBot {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CrawlerBot.class);
+
 	final AtomicBoolean isCrawling = new AtomicBoolean(false);
 	final List<String> channels = new ArrayList<>();
 
 	public List<String> crawl(final String server) throws IOException, IrcException, InterruptedException {
+		LOGGER.debug("Connecting to server: {}", server);
 		connect(server);
 		isCrawling.set(true);
 		listChannels();
@@ -39,6 +44,7 @@ public class CrawlerBot extends PircBot {
 				isCrawling.set(false);
 				break;
 			default:
+				// TODO: Make this more robust and handle some error cases
 				break;
 		}
 	}

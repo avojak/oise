@@ -3,7 +3,7 @@ package com.avojak.webapp.oise.service;
 import com.avojak.webapp.oise.configuration.WebappProperties;
 import com.avojak.webapp.oise.model.ChannelListing;
 import com.avojak.webapp.oise.service.bot.CrawlerBot;
-import com.avojak.webapp.oise.service.callable.CrawlCallable;
+import com.avojak.webapp.oise.service.runnable.CrawlCallable;
 import com.avojak.webapp.oise.service.callback.ServerCrawlCallback;
 import com.avojak.webapp.oise.service.callback.CrawlerBotCallback;
 import com.avojak.webapp.oise.service.function.ChannelListingTransformFunction;

@@ -1,4 +1,4 @@
-package com.avojak.webapp.oise.service.callable;
+package com.avojak.webapp.oise.service.runnable;
 
 import com.avojak.webapp.oise.service.bot.CrawlerBot;
 
