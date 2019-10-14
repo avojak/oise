@@ -29,9 +29,6 @@ import java.util.concurrent.ThreadFactory;
 @Configuration
 public class WebappConfiguration {
 
-	@Value("${oise.rootdir")
-	private String rootDirectory;
-
 	@Value("${oise.serversfile}")
 	private String serversFile;
 
@@ -41,7 +38,7 @@ public class WebappConfiguration {
 	@Bean
 	public WebappProperties webappProperties() {
 		final List<String> servers = new ArrayList<>();
-		try (final BufferedReader reader = new BufferedReader(new FileReader(Paths.get(rootDirectory, serversFile).toFile()))) {
+		try (final BufferedReader reader = new BufferedReader(new FileReader(Paths.get(serversFile).toFile()))) {
 			String line = reader.readLine();
 			while (line != null) {
 				final String server = line.trim();
@@ -54,7 +51,7 @@ public class WebappConfiguration {
 			throw new RuntimeException(e);
 		}
 
-		return new WebappProperties(servers, Paths.get(rootDirectory, indexDirectory).toString());
+		return new WebappProperties(servers, Paths.get(indexDirectory).toString());
 	}
 
 	@Bean(name = "CrawlerExecutorService")

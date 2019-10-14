@@ -39,7 +39,7 @@ public class CrawlingService extends AbstractScheduledService {
 
 	@Override
 	protected void runOneIteration() throws Exception {
-		LOGGER.debug("Preparing to crawl {} servers", properties.getServers().size());
+		LOGGER.info("Preparing to crawl {} servers", properties.getServers().size());
 		final List<ListenableFuture<List<ChannelListing>>> channelListingsFutures = new ArrayList<>();
 		for (final String server : properties.getServers()) {
 			// Create the bot that will crawl the server
@@ -73,7 +73,7 @@ public class CrawlingService extends AbstractScheduledService {
 				for (final List<ChannelListing> serverChannelListings : result) {
 					numChannels += serverChannelListings.size();
 				}
-				LOGGER.debug("Successfully crawled {} servers for a total of {} channels", numServersCrawled, numChannels);
+				LOGGER.info("Successfully crawled {} servers for a total of {} channels", numServersCrawled, numChannels);
 			}
 
 			@Override
