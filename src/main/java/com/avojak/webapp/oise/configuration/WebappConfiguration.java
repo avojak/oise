@@ -6,10 +6,12 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexDeletionPolicy;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,6 +93,11 @@ public class WebappConfiguration {
 		final Directory directory = FSDirectory.open(new File(indexDirectory).toPath());
 		final IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
 		return new IndexWriter(directory, config);
+	}
+
+	@Bean
+	public IndexSearcher indexSearcher() throws IOException {
+		return new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File(indexDirectory).toPath())));
 	}
 
 }
