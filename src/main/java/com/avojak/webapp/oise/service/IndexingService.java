@@ -36,9 +36,6 @@ public class IndexingService extends AbstractIdleService {
 	private EventBus eventBus;
 
 	@Autowired
-	private IndexWriter indexWriter;
-
-	@Autowired
 	private IndexWriterRunnable.IndexWriterRunnableFactory indexWriterRunnableFactory;
 
 	@Subscribe
@@ -64,14 +61,13 @@ public class IndexingService extends AbstractIdleService {
 
 	@Override
 	protected void startUp() {
-		LOGGER.debug("Registering {} to receive events", serviceName());
 		eventBus.register(this);
+		LOGGER.debug("Registered {} to receive events", serviceName());
 	}
 
 	@Override
 	protected void shutDown() throws IOException {
 		executorService.shutdownNow();
-		indexWriter.close();
 	}
 
 	@Override

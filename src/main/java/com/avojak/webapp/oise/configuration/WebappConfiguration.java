@@ -70,8 +70,11 @@ public class WebappConfiguration {
 
 	@Bean(name = "IndexerExecutorService")
 	public ListeningExecutorService indexerExecutorService() {
-		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("indexer-%d").build();
-		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
+//		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("indexer-%d").build();
+//		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
+
+		// This has to be a single thread because the IndexWriter creates a lock on the index
+		return MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
 	}
 
 	@Bean
@@ -87,17 +90,22 @@ public class WebappConfiguration {
 		return new RestTemplate();
 	}
 
-	@Bean
-	public IndexWriter indexWriter() throws IOException {
-		// TODO: Update this configuration so that we append to an index if one already exists
-		final Directory directory = FSDirectory.open(new File(indexDirectory).toPath());
-		final IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
-		return new IndexWriter(directory, config);
-	}
-
-	@Bean
-	public IndexSearcher indexSearcher() throws IOException {
-		return new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File(indexDirectory).toPath())));
-	}
+//	@Bean
+//	public IndexWriter indexWriter() throws IOException {
+//		final Directory directory = FSDirectory.open(new File(indexDirectory).toPath());
+//		final IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+//		config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+//		return new IndexWriter(directory, config);
+//	}
+//
+//	@Bean
+//	public IndexSearcher indexSearcher() throws IOException {
+//		return new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File(indexDirectory).toPath())));
+//	}
+//
+//	@Bean
+//	public DirectoryReader directoryReader() throws IOException {
+//		return DirectoryReader.open(FSDirectory.open(new File(indexDirectory).toPath()));
+//	}
 
 }
