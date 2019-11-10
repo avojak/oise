@@ -26,20 +26,22 @@ public class CrawlerBotCallback implements FutureCallback<List<String>> {
 
 	@Override
 	public void onSuccess(List<String> result) {
-		LOGGER.debug("Found {} channels on {}", result.size(), server);
 		disposeBot();
 	}
 
 	@Override
 	public void onFailure(final Throwable t) {
-		LOGGER.error("Error while crawling server: " + server, t);
 		disposeBot();
 	}
 
 	private void disposeBot() {
 		bot.disconnect();
 		LOGGER.trace("Disconnected bot {} from {}", bot.hashCode(), server);
-		bot.dispose();
+		try {
+			bot.dispose();
+		} catch (final Exception e) {
+			LOGGER.error("Error while disposing bot");
+		}
 		LOGGER.trace("Disposed bot {}", bot.hashCode());
 	}
 

@@ -65,25 +65,21 @@ public class CrawlingService extends AbstractScheduledService {
 
 		// Consolidate all futures into one future from which we can report overall success/failure
 		final ListenableFuture<List<List<ChannelListing>>> crawlFuture = Futures.successfulAsList(channelListingsFutures);
-		Futures.addCallback(crawlFuture, new FutureCallback<List<List<ChannelListing>>>() {
-			@Override
-			public void onSuccess(final List<List<ChannelListing>> result) {
-				final int numServersCrawled = result.size();
-				int numChannels = 0;
-				for (final List<ChannelListing> serverChannelListings : result) {
-					numChannels += serverChannelListings.size();
-				}
-				LOGGER.info("Successfully crawled {} servers for a total of {} channels", numServersCrawled, numChannels);
-			}
-
-			@Override
-			public void onFailure(final Throwable t) {
-				LOGGER.error("Error while crawling servers", t);
-			}
-		}, executorService);
 
 		// TODO: Should probably time this out
-		crawlFuture.get();
+		final List<List<ChannelListing>> results = crawlFuture.get();
+		final int totalServers = results.size();
+		int numServersSuccessfullyCrawled = 0;
+		int numChannels = 0;
+		for (final List<ChannelListing> serverChannelListings : results) {
+			// Ignore null entries for failed futures
+			if (serverChannelListings == null) {
+				continue;
+			}
+			numChannels += serverChannelListings.size();
+			numServersSuccessfullyCrawled++;
+		}
+		LOGGER.info("Successfully crawled {}/{} servers for a total of {} channels", numServersSuccessfullyCrawled, totalServers, numChannels);
 	}
 
 	@Override

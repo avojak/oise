@@ -23,11 +23,5 @@ public class CrawlCallable implements Callable<List<String>> {
 	@Override
 	public List<String> call() throws Exception {
 		return bot.crawl(server);
-//		try {
-//			return bot.crawl(server);
-//		} catch (IOException | IrcException | InterruptedException e) {
-//			LOGGER.error("Error while crawling server: ", e);
-//			return new ArrayList<>();
-//		}
 	}
 }

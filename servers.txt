@@ -1,10 +1,2 @@
 chat.freenode.net
-open.ircnet.net
-irc.efnet.org
-irc.undernet.org
-irc.oftc.net
-irc.quakenet.org
-irc.rizon.net
 irc.bsdunix.us
-irc.dal.net
-irc.irc-hispano.org
