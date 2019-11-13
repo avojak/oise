@@ -17,7 +17,7 @@ public class SearchController {
 	@Autowired
 	private SearchService searchService;
 
-	@GetMapping(value = "/v1/search")
+	@GetMapping(value = "/api/v1/search")
 	public List<SearchResult> searchV1(@RequestParam("q") String query) {
 		try {
 			return searchService.search(query);

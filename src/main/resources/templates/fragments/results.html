@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+</head>
+
+<body>
+<div th:fragment="results">
+    <ul th:each="result : ${results}">
+        <li>
+            <span th:text="${result.server}"></span>
+            <span th:text="${result.channel}"></span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

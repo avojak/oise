@@ -33,7 +33,7 @@ public class ApplicationRunner implements CommandLineRunner {
 	@Override
 	public void run(final String... args) throws Exception {
 		Set<Service> services = new HashSet<>();
-		services.add(crawlingService);
+//		services.add(crawlingService);
 		services.add(indexingService);
 
 		final ServiceManager manager = new ServiceManager(services);

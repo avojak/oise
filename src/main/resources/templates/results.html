@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body class="text-center">
+
+<nav th:replace="fragments/navbar :: navbar"></nav>
+
+<div th:replace="fragments/results :: results"></div>
+
+<footer class="footer">
+    <div>
+        <small>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a>
+            from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></small>
+    </div>
+</footer>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/bootstrap-4.1.3.min.js"></script>
+<script th:inline="javascript">
+  $('#inputQuery').keydown(function(e) {
+    if (e.keyCode === 13) {
+      do_query($(this).val());
+    }
+  });
+
+  function search() {
+    do_query($('#inputQuery').val());
+  }
+
+  function do_query(query) {
+    if (query.length === 0 || !query.trim()) {
+      $('#inputQuery').val('');
+      return;
+    }
+    window.location='results?q=' + query;
+  }
+</script>
+
+</body>
+
+</html>
