@@ -6,6 +6,10 @@
 
 <body>
 <div class="results-container" th:fragment="results">
+    <p th:if="${#lists.size(results)} eq '0'">No results</p>
+    <p th:unless="${#lists.size(results)} eq '0'">
+        <span>Search results for: "<i><span th:text="${query}"></span></i>"</span>
+    </p>
     <ul class="list-unstyled" th:each="result : ${results}">
         <li>
             <div class="card text-left">
