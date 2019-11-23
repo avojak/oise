@@ -5,7 +5,7 @@
 </head>
 
 <body>
-<div class="container results-container" th:fragment="results">
+<div class="results-container" th:fragment="results">
     <ul class="list-unstyled" th:each="result : ${results}">
         <li>
             <div class="card text-left">
@@ -14,6 +14,15 @@
                     <small th:text="${result.server}"></small>
                     <p class="card-text" th:text="${result.topic}"></p>
                 </div>
+            </div>
+        </li>
+    </ul>
+    <ul class="list-unstyled">
+        <li>
+            <div class="container">
+                <small>Icons made by <a href="https://www.flaticon.com/authors/smashicons"
+                                        title="Smashicons">Smashicons</a>
+                    from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></small>
             </div>
         </li>
     </ul>
