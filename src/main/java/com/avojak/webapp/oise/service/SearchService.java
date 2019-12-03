@@ -26,9 +26,6 @@ import java.util.List;
 @Service
 public class SearchService {
 
-//	@Autowired
-//	private IndexSearcher indexSearcher;
-
 	@Autowired
 	private WebappProperties properties;
 
@@ -46,9 +43,10 @@ public class SearchService {
 			final String server = document.get("server");
 			final String channel = document.get("channel");
 			final String topic = document.get("topic");
+			final String urlContent = document.get("urlContent");
 			// TODO: Why is this null...?
 //			final int users = document.getField("users").numericValue().intValue();
-			searchResults.add(new SearchResult(server, channel, topic, 0, scoreDoc));
+			searchResults.add(new SearchResult(server, channel, topic, urlContent, 0, scoreDoc));
 		}
 		return searchResults;
 	}

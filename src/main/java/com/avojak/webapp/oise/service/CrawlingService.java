@@ -3,6 +3,7 @@ package com.avojak.webapp.oise.service;
 import com.avojak.webapp.oise.configuration.WebappProperties;
 import com.avojak.webapp.oise.model.ChannelListing;
 import com.avojak.webapp.oise.service.bot.CrawlerBot;
+import com.avojak.webapp.oise.service.function.WebScrapingTransformFunction;
 import com.avojak.webapp.oise.service.runnable.CrawlCallable;
 import com.avojak.webapp.oise.service.callback.ServerCrawlCallback;
 import com.avojak.webapp.oise.service.callback.CrawlerBotCallback;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CrawlingService extends AbstractScheduledService {
@@ -33,6 +35,9 @@ public class CrawlingService extends AbstractScheduledService {
 
 	@Autowired
 	private ServerCrawlCallback.ServerCrawlCallbackFactory serverCrawlCallbackFactory;
+
+	@Autowired
+	private WebScrapingTransformFunction.WebScrapingTransformFunctionFactory webScrapingTransformFunctionFactory;
 
 	@Autowired
 	private WebappProperties properties;
@@ -56,11 +61,14 @@ public class CrawlingService extends AbstractScheduledService {
 			// Convert the messages from the IRC server into models we can process
 			final ListenableFuture<List<ChannelListing>> channelListingsFuture = Futures.transform(future, new ChannelListingTransformFunction(server), executorService);
 
+			// Scrape the URLs in the topic and update the listing objects
+			final ListenableFuture<List<ChannelListing>> scrapedListingsFuture = Futures.transform(channelListingsFuture, webScrapingTransformFunctionFactory.create(), executorService);
+
 			// Post the results to the event bus
-			Futures.addCallback(channelListingsFuture, serverCrawlCallbackFactory.create(server), executorService);
+			Futures.addCallback(scrapedListingsFuture, serverCrawlCallbackFactory.create(server), executorService);
 
 			// Accumulate all the futures
-			channelListingsFutures.add(channelListingsFuture);
+			channelListingsFutures.add(scrapedListingsFuture);
 		}
 
 		// Consolidate all futures into one future from which we can report overall success/failure

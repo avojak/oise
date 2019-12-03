@@ -33,6 +33,9 @@ public class IndexingService extends AbstractIdleService {
 	private ListeningExecutorService executorService;
 
 	@Autowired
+	private IndexWriter indexWriter;
+
+	@Autowired
 	private EventBus eventBus;
 
 	@Autowired
@@ -67,6 +70,7 @@ public class IndexingService extends AbstractIdleService {
 
 	@Override
 	protected void shutDown() throws IOException {
+		indexWriter.close();
 		executorService.shutdownNow();
 	}
 

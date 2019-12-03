@@ -1,5 +1,6 @@
 package com.avojak.webapp.oise.configuration;
 
+import com.avojak.webapp.oise.cache.BadUrlCache;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -43,6 +44,12 @@ public class WebappConfiguration {
 	@Value("${oise.index.directory}")
 	private String indexDirectory;
 
+	@Value("${oise.crawler.max.threads}")
+	private int maxCrawlerThreads;
+
+	@Value("${oise.scraper.max.threads}")
+	private int maxScraperThreads;
+
 	@Bean
 	public WebappProperties webappProperties() {
 		final List<String> servers = new ArrayList<>();
@@ -65,7 +72,7 @@ public class WebappConfiguration {
 	@Bean(name = "CrawlerExecutorService")
 	public ListeningExecutorService crawlerExecutorService() {
 		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("crawler-%d").build();
-		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
+		return MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(maxCrawlerThreads, threadFactory));
 	}
 
 	@Bean(name = "IndexerExecutorService")
@@ -75,6 +82,13 @@ public class WebappConfiguration {
 
 		// This has to be a single thread because the IndexWriter creates a lock on the index
 		return MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
+	}
+
+	@Bean(name = "ScraperExecutorService")
+	public ListeningExecutorService scraperExecutorService() {
+		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("scraper-%d").build();
+//		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
+		return MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(maxScraperThreads, threadFactory));
 	}
 
 	@Bean
@@ -88,6 +102,18 @@ public class WebappConfiguration {
 		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 		clientHttpRequestFactory.setConnectTimeout(timeout);
 		return new RestTemplate();
+	}
+
+	@Bean
+	public IndexWriter indexWriter(final WebappProperties properties) throws Exception {
+		final IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+		config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+		return new IndexWriter(FSDirectory.open(new File(properties.getIndexDirectory()).toPath()), config);
+	}
+
+	@Bean
+	public BadUrlCache badUrlCache() {
+		return new BadUrlCache();
 	}
 
 //	@Bean

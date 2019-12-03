@@ -9,11 +9,18 @@ public class ChannelListing {
 	private final String topic;
 	private final int numUsers;
 
+	private String urlContent;
+
 	public ChannelListing(final String server, final String channel, final String topic, final int numUsers) {
 		this.server = checkNotNull(server);
 		this.channel = checkNotNull(channel);
 		this.topic = checkNotNull(topic);
 		this.numUsers = numUsers;
+		urlContent = "";
+	}
+
+	public void setUrlContent(final String urlContent) {
+		this.urlContent = urlContent;
 	}
 
 	public String getServer() {
@@ -32,4 +39,7 @@ public class ChannelListing {
 		return numUsers;
 	}
 
+	public String getUrlContent() {
+		return urlContent;
+	}
 }
