@@ -47,6 +47,10 @@ h1 {
   margin-bottom: 40px;
 }
 
+.fas, .fab {
+  padding-right: 8px;
+}
+
 body {
   overflow-y: scroll;
 }

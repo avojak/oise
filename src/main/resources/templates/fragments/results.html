@@ -15,8 +15,10 @@
             <div class="card text-left">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${result.channel}"></h5>
-                    <small th:text="${result.server}"></small>
-                    <p class="card-text" th:text="${result.topic}"></p>
+                    <small><i class="fas fa-server"></i><span th:text="${result.server}"></span></small>
+                    <small style="margin-left: 16px;"><i class="fas fa-users"></i><span
+                            th:text="${result.users}"></span></small>
+                    <p style="margin-top: 8px;" class="card-text" th:text="${result.topic}"></p>
                 </div>
             </div>
         </li>

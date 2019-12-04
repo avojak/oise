@@ -34,7 +34,7 @@ public class SearchService {
 		final IndexSearcher indexSearcher = new IndexSearcher(DirectoryReader.open(indexDirectory));
 
 		final Analyzer analyzer = new StandardAnalyzer();
-		final QueryParser queryParser = new MultiFieldQueryParser(new String[]{ "channel", "topic" }, analyzer);
+		final QueryParser queryParser = new MultiFieldQueryParser(new String[]{ "channel", "topic", "urlContent" }, analyzer);
 		final Query query = queryParser.parse(rawQuery);
 		final ScoreDoc[] scoreDocs = indexSearcher.search(query, 10, Sort.RELEVANCE, true).scoreDocs;
 		final List<SearchResult> searchResults = new ArrayList<>();
@@ -44,9 +44,8 @@ public class SearchService {
 			final String channel = document.get("channel");
 			final String topic = document.get("topic");
 			final String urlContent = document.get("urlContent");
-			// TODO: Why is this null...?
-//			final int users = document.getField("users").numericValue().intValue();
-			searchResults.add(new SearchResult(server, channel, topic, urlContent, 0, scoreDoc));
+			final int users = Integer.valueOf(document.get("users"));
+			searchResults.add(new SearchResult(server, channel, topic, urlContent, users, scoreDoc));
 		}
 		return searchResults;
 	}

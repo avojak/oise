@@ -5,6 +5,7 @@ import com.avojak.webapp.oise.model.ChannelListing;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.NumericDocValuesField;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
@@ -53,7 +54,8 @@ public class IndexWriterRunnable implements Runnable {
 			document.add(new TextField("channel", channelListing.getChannel(), TextField.Store.YES));
 			document.add(new TextField("topic", channelListing.getTopic(), TextField.Store.YES));
 			document.add(new TextField("urlContent", channelListing.getUrlContent(), TextField.Store.YES));
-			document.add(new NumericDocValuesField("users", channelListing.getNumUsers()));
+			document.add(new StringField("users", String.valueOf(channelListing.getNumUsers()), TextField.Store.YES));
+//			document.add(new NumericDocValuesField("users", channelListing.getNumUsers()));
 			try {
 				indexWriter.updateDocument(new Term("id", id), document);
 			} catch (final IOException e) {
