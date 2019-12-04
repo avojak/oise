@@ -5,7 +5,6 @@ import com.avojak.webapp.oise.model.ChannelListing;
 import com.linkedin.urls.Url;
 import com.linkedin.urls.detection.UrlDetector;
 import com.linkedin.urls.detection.UrlDetectorOptions;
-import org.apache.lucene.index.IndexWriter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -19,6 +18,9 @@ import java.util.concurrent.Callable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Implementation of {@link Callable} to scrape web content given a URL.
+ */
 public class ScrapingCallable implements Callable<ChannelListing> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapingCallable.class);

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The REST controller for the search endpoints.
+ */
 @RestController
 public class SearchController {
 

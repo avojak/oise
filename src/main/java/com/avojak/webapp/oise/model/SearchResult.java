@@ -4,6 +4,9 @@ import org.apache.lucene.search.ScoreDoc;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Models an API search result.
+ */
 public class SearchResult {
 
 	private final String server;

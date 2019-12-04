@@ -2,6 +2,9 @@ package com.avojak.webapp.oise.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Models a channel result "listing".
+ */
 public class ChannelListing {
 
 	private final String server;

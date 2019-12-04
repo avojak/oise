@@ -6,6 +6,9 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * The event to be sent when crawling completes for a server.
+ */
 public class ServerCrawlCompleteEvent {
 
 	private final String server;

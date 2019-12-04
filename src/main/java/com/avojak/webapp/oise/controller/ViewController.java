@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The REST controller for the UI endpoints.
+ */
 @Controller
 @RequestMapping("/")
 public class ViewController {

@@ -9,7 +9,6 @@ import com.avojak.webapp.oise.service.callback.ServerCrawlCallback;
 import com.avojak.webapp.oise.service.callback.CrawlerBotCallback;
 import com.avojak.webapp.oise.service.function.ChannelListingTransformFunction;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -22,8 +21,10 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Service to crawl IRC servers for channels.
+ */
 @Service
 public class CrawlingService extends AbstractScheduledService {
 

@@ -5,15 +5,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexDeletionPolicy;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +19,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +70,6 @@ public class WebappConfiguration {
 
 	@Bean(name = "IndexerExecutorService")
 	public ListeningExecutorService indexerExecutorService() {
-//		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("indexer-%d").build();
-//		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
-
 		// This has to be a single thread because the IndexWriter creates a lock on the index
 		return MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
 	}
@@ -87,7 +77,6 @@ public class WebappConfiguration {
 	@Bean(name = "ScraperExecutorService")
 	public ListeningExecutorService scraperExecutorService() {
 		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("scraper-%d").build();
-//		return MoreExecutors.listeningDecorator(Executors.newCachedThreadPool(threadFactory));
 		return MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(maxScraperThreads, threadFactory));
 	}
 
@@ -115,23 +104,5 @@ public class WebappConfiguration {
 	public BadUrlCache badUrlCache() {
 		return new BadUrlCache();
 	}
-
-//	@Bean
-//	public IndexWriter indexWriter() throws IOException {
-//		final Directory directory = FSDirectory.open(new File(indexDirectory).toPath());
-//		final IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
-//		config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-//		return new IndexWriter(directory, config);
-//	}
-//
-//	@Bean
-//	public IndexSearcher indexSearcher() throws IOException {
-//		return new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File(indexDirectory).toPath())));
-//	}
-//
-//	@Bean
-//	public DirectoryReader directoryReader() throws IOException {
-//		return DirectoryReader.open(FSDirectory.open(new File(indexDirectory).toPath()));
-//	}
 
 }

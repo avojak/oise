@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Implementation of {@link Function} to add the scraped web content to channel listings.
+ */
 public class WebScrapingTransformFunction implements Function<List<ChannelListing>, List<ChannelListing>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebScrapingTransformFunction.class);
@@ -54,25 +57,6 @@ public class WebScrapingTransformFunction implements Function<List<ChannelListin
 			LOGGER.error("Error while getting result of scraping", e);
 			return input;
 		}
-
-//		for (final ChannelListing channelListing : input) {
-//			final UrlDetector detector = new UrlDetector(channelListing.getTopic(), UrlDetectorOptions.Default);
-//			final List<Url> urls = detector.detect();
-//
-//			final List<ListenableFuture<String>> scrapingFutures = new ArrayList<>();
-//			for (final Url url : urls) {
-//				if (badUrlCache.contains(url)) {
-//					LOGGER.debug("Skipping known bad URL: " + url.toString());
-//					continue;
-//				}
-//				scrapingFutures.add(executorService.submit(new ScrapingCallable(url)));
-//			}
-//			final ListenableFuture<List<String>> urlContentFuture = Futures.successfulAsList(scrapingFutures);
-//			final ListenableFuture<String> urlContent = Futures.transform(urlContentFuture, input1 -> StringUtils.collectionToDelimitedString(input1, " "), executorService);
-//
-//			channelListing.setUrlContent(urlContent.get());
-//		}
-//		return input;
 	}
 
 	/**
