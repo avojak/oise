@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/main/resources/static/chat.svg" alt="Icon" />
+  <img src="src/main/resources/static/chat.svg" height="64" width="64" alt="Icon" />
 </p>
 <h1 align="center">Open IRC Search Engine (OISE)</h1>
 
