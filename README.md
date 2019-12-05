@@ -1,4 +1,7 @@
-# Open IRC Search Engine (OISE)
+<p align="center">
+  <img src="src/main/resources/static/chat.svg" alt="Icon" />
+</p>
+<h1 align="center">Open IRC Search Engine (OISE)</h1>
 
 OISE is an open-source search engine for IRC servers and channels.
 
