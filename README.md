@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/avojak/oise.svg?branch=master)](https://travis-ci.com/avojak/oise)
 ![GitHub](https://img.shields.io/github/license/avojak/oise)
 
 <p align="center">
