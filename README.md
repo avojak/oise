@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/avojak/oise.svg?branch=master)](https://travis-ci.com/avojak/oise)
 ![GitHub](https://img.shields.io/github/license/avojak/oise)
+![Docker Pulls](https://img.shields.io/docker/pulls/avojak/oise)
 
 <p align="center">
   <img src="src/main/resources/static/chat.svg" height="64" width="64" alt="Icon" />
