@@ -17,6 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Implementation of {@link FutureCallback} to post results to the event bus upon successfully crawling a server for
  * channels.
  */
+@SuppressWarnings("UnstableApiUsage")
 public class ServerCrawlCallback implements FutureCallback<List<ChannelListing>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServerCrawlCallback.class);

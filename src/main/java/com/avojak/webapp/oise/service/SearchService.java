@@ -15,6 +15,8 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +31,20 @@ import java.util.List;
 @Service
 public class SearchService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SearchService.class);
+
 	@Autowired
 	private WebappProperties properties;
 
 	public List<SearchResult> search(final String rawQuery) throws ParseException, IOException {
-		final Directory indexDirectory = FSDirectory.open(new File(properties.getIndexDirectory()).toPath());
-		final IndexSearcher indexSearcher = new IndexSearcher(DirectoryReader.open(indexDirectory));
+		final IndexSearcher indexSearcher;
+		try {
+			final Directory indexDirectory = FSDirectory.open(new File(properties.getIndexDirectory()).toPath());
+			indexSearcher = new IndexSearcher(DirectoryReader.open(indexDirectory));
+		} catch (final IOException e) {
+			LOGGER.error("Error opening the index - does it exist yet?", e);
+			return new ArrayList<>();
+		}
 
 		final Analyzer analyzer = new StandardAnalyzer();
 		final QueryParser queryParser = new MultiFieldQueryParser(new String[]{ "channel", "topic", "urlContent" }, analyzer);

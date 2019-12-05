@@ -19,13 +19,28 @@ This will allow you to restart the container and have immediate access to the pr
 created.
 
 ```bash
-$ docker run -it --name oise -v lucene-index:/lucene-index -p 8080:8080 avojak/oise:latest
+$ docker run \
+    -it \
+    --name oise \
+    -v lucene-index:/lucene-index \
+    -p 8080:8080 \
+    avojak/oise:latest
 ```
 
-### Configuration
+If you would like to customize the list of servers that are indexed, you can mount your own server list.
 
-The following environment variables may be optionally overridden at runtime:
+For example, a much shorter file (/tmp/servers.txt on your local system):
+```
+irc.freenode.net
+irc.bsdunix.us
+```
 
-| Environment Variable | Default Value |
-| -------------------- | ------------- |
-| TODO                 |               |
+```bash
+$ docker run \
+    -it \
+    --name oise \
+    -v lucene-index:/lucene-index \
+    -v /tmp/servers.txt:/servers.txt \
+    -p 8080:8080 \
+    avojak/oise:latest
+```

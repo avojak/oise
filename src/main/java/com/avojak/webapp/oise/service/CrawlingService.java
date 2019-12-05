@@ -9,22 +9,32 @@ import com.avojak.webapp.oise.service.callback.ServerCrawlCallback;
 import com.avojak.webapp.oise.service.callback.CrawlerBotCallback;
 import com.avojak.webapp.oise.service.function.ChannelListingTransformFunction;
 import com.google.common.util.concurrent.AbstractScheduledService;
+import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Service to crawl IRC servers for channels.
  */
+@SuppressWarnings("UnstableApiUsage")
 @Service
 public class CrawlingService extends AbstractScheduledService {
 
@@ -44,8 +54,17 @@ public class CrawlingService extends AbstractScheduledService {
 	private WebappProperties properties;
 
 	@Override
-	protected void runOneIteration() throws Exception {
-		LOGGER.info("Preparing to crawl {} servers", properties.getServers().size());
+	protected void runOneIteration() {
+		final int totalServers = properties.getServers().size();
+		LOGGER.info("Preparing to crawl {} servers", totalServers);
+
+		final AtomicInteger crawlProgress = new AtomicInteger(0);
+		final AtomicInteger numServersSuccessfullyCrawled = new AtomicInteger(0);
+		final AtomicInteger numChannelsFound = new AtomicInteger(0);
+
+		final List<String> servers = new ArrayList<>(properties.getServers());
+		final AtomicReference<List<String>> crawlQueue = new AtomicReference<>(servers);
+
 		final List<ListenableFuture<List<ChannelListing>>> channelListingsFutures = new ArrayList<>();
 		for (final String server : properties.getServers()) {
 			// Create the bot that will crawl the server
@@ -67,6 +86,28 @@ public class CrawlingService extends AbstractScheduledService {
 
 			// Post the results to the event bus
 			Futures.addCallback(scrapedListingsFuture, serverCrawlCallbackFactory.create(server), executorService);
+			Futures.addCallback(scrapedListingsFuture, new FutureCallback<List<ChannelListing>>() {
+				@Override
+				public void onSuccess(final List<ChannelListing> result) {
+					numServersSuccessfullyCrawled.incrementAndGet();
+					numChannelsFound.addAndGet(result.size());
+					updateProgress();
+				}
+
+				@Override
+				public void onFailure(final Throwable t) {
+					updateProgress();
+				}
+
+				private void updateProgress() {
+					final int progress = crawlProgress.incrementAndGet();
+					LOGGER.info("Crawl progress: {}/{}", progress, totalServers);
+					LOGGER.debug("Remaining servers: {}", StringUtils.collectionToDelimitedString(crawlQueue.updateAndGet(strings -> {
+						strings.remove(server);
+						return strings;
+					}), ", "));
+				}
+			}, executorService);
 
 			// Accumulate all the futures
 			channelListingsFutures.add(scrapedListingsFuture);
@@ -75,20 +116,13 @@ public class CrawlingService extends AbstractScheduledService {
 		// Consolidate all futures into one future from which we can report overall success/failure
 		final ListenableFuture<List<List<ChannelListing>>> crawlFuture = Futures.successfulAsList(channelListingsFutures);
 
-		// TODO: Should probably time this out
-		final List<List<ChannelListing>> results = crawlFuture.get();
-		final int totalServers = results.size();
-		int numServersSuccessfullyCrawled = 0;
-		int numChannels = 0;
-		for (final List<ChannelListing> serverChannelListings : results) {
-			// Ignore null entries for failed futures
-			if (serverChannelListings == null) {
-				continue;
-			}
-			numChannels += serverChannelListings.size();
-			numServersSuccessfullyCrawled++;
+		try {
+			crawlFuture.get(1, TimeUnit.HOURS);
+		} catch (final InterruptedException | ExecutionException | TimeoutException e) {
+			LOGGER.error("Timed out waiting for crawl to complete", e);
+			LOGGER.debug("Un-crawled servers: {}", StringUtils.collectionToDelimitedString(crawlQueue.get(), ", "));
 		}
-		LOGGER.info("Successfully crawled {}/{} servers for a total of {} channels", numServersSuccessfullyCrawled, totalServers, numChannels);
+		LOGGER.info("Successfully crawled {}/{} servers for a total of {} channels", numServersSuccessfullyCrawled.get(), totalServers, numChannelsFound.get());
 	}
 
 	@Override

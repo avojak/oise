@@ -6,8 +6,8 @@ ARG DEPENDENCY=target/dependency
 COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY ${DEPENDENCY}/META-INF /app/META-INF
 COPY ${DEPENDENCY}/BOOT-INF/classes /app
-COPY servers.txt /
-COPY docker-entrypoint.sh /
+COPY default-servers.txt /servers.txt
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # Install curl for use in the health check
 RUN apk --no-cache add curl
@@ -20,7 +20,7 @@ RUN chmod +x /docker-entrypoint.sh
 RUN mkdir /lucene-index
 
 # Update file ownership
-RUN chown oise:oise /app /docker-entrypoint.sh /lucene-index
+RUN chown oise:oise /app /docker-entrypoint.sh /lucene-index /servers.txt
 
 VOLUME [ "/lucene-index" ]
 

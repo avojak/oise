@@ -1,7 +1,8 @@
-${Ansi.GREEN}   ___ ___ ____  _____  ______
-${Ansi.GREEN}  / _ \_ _/ ___|| ____| \ \ \ \
-${Ansi.GREEN} | | | | |\___ \|  _|    \ \ \ \
-${Ansi.GREEN} | |_| | | ___) | |___   / / / /
-${Ansi.GREEN}  \___/___|____/|_____| /_/_/_/
+${Ansi.GREEN}   ____ _____  _____ ______
+${Ansi.GREEN}  / __ \_   _|/ ____|  ____|
+${Ansi.GREEN} | |  | || | | (___ | |__
+${Ansi.GREEN} | |  | || |  \___ \|  __|
+${Ansi.GREEN} | |__| || |_ ____) | |____
+${Ansi.GREEN}  \____/_____|_____/|______|
 ${Ansi.GREEN}
-${Ansi.RED} :: Spring Boot :: (${spring-boot.formatted-version}) ${Ansi.DEFAULT}
+${Ansi.RED} :: Open IRC Search Engine (v1.0.0) :: ${Ansi.DEFAULT}
