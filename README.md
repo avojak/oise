@@ -1,3 +1,5 @@
+![GitHub](https://img.shields.io/github/license/avojak/oise)
+
 <p align="center">
   <img src="src/main/resources/static/chat.svg" height="64" width="64" alt="Icon" />
 </p>

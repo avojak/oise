@@ -1,0 +1,15 @@
+---
+
+language: java
+
+services:
+  - docker
+
+script:
+  - mvn install dockerfile:build
+
+deploy:
+  provider: script
+  script: bash docker_push
+  on:
+    branch: master
