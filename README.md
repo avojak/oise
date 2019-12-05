@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">Open IRC Search Engine (OISE)</h1>
 
-OISE is an open-source search engine for IRC servers and channels.
+<p align="enter">OISE is an open-source search engine for IRC servers and channels.</p>
 
 ## Building
 
