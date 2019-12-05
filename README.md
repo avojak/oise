@@ -47,3 +47,13 @@ $ docker run \
     -p 8080:8080 \
     avojak/oise:latest
 ```
+
+## API Usage
+
+Once running, the API documentation is viewable at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+
+### Example Request
+
+```bash
+curl -X GET http://localhost:8080/api/v1/search?q=uiuc
+```
