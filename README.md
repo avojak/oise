@@ -52,12 +52,18 @@ $ docker run \
     avojak/oise:latest
 ```
 
-## API Usage
+## Usage
+
+### REST API
 
 Once running, the API documentation is viewable at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
 
-### Example Request
+#### Example Request
 
 ```bash
 curl -X GET http://localhost:8080/api/v1/search?q=uiuc
 ```
+
+### Webpage Search
+
+A webpage for UI-based search is also available at http://localhost:8080. Simply type your query in the search field and hit <kbd>Enter</kbd>, or select the "Search" button.
