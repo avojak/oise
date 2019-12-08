@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Service to search the index.
  */
@@ -37,6 +39,7 @@ public class SearchService {
 	private WebappProperties properties;
 
 	public List<SearchResult> search(final String rawQuery) throws ParseException, IOException {
+		checkNotNull(rawQuery, "rawQuery cannot be null");
 		final IndexSearcher indexSearcher;
 		try {
 			final Directory indexDirectory = FSDirectory.open(new File(properties.getIndexDirectory()).toPath());

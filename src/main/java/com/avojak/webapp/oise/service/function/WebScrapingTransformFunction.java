@@ -25,6 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Implementation of {@link Function} to add the scraped web content to channel listings.
  */
+@SuppressWarnings("UnstableApiUsage")
 public class WebScrapingTransformFunction implements Function<List<ChannelListing>, List<ChannelListing>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebScrapingTransformFunction.class);

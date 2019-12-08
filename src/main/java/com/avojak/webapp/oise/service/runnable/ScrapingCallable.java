@@ -34,7 +34,7 @@ public class ScrapingCallable implements Callable<ChannelListing> {
 	}
 
 	@Override
-	public ChannelListing call() throws Exception {
+	public ChannelListing call() {
 		final UrlDetector detector = new UrlDetector(originalListing.getTopic(), UrlDetectorOptions.Default);
 		final List<Url> urls = detector.detect();
 		final StringBuilder listingUrlContentBuilder = new StringBuilder();

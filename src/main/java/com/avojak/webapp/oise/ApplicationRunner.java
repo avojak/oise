@@ -19,6 +19,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * The main runner to start the underlying services.
  */
+@SuppressWarnings("UnstableApiUsage")
 @org.springframework.stereotype.Service
 public class ApplicationRunner implements CommandLineRunner {
 

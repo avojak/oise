@@ -39,10 +39,7 @@ public class ViewController {
 		final List<SearchResult> results = new ArrayList<>();
 		try {
 			results.addAll(searchService.search(query));
-		} catch (ParseException e) {
-			// TODO: Handle this
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (final ParseException | IOException e) {
 			// TODO: Handle this
 			e.printStackTrace();
 		}

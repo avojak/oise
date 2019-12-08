@@ -18,8 +18,8 @@ public class CrawlerBot extends PircBot {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CrawlerBot.class);
 
-	final AtomicBoolean isCrawling = new AtomicBoolean(false);
-	final List<String> channels = new ArrayList<>();
+	private final AtomicBoolean isCrawling = new AtomicBoolean(false);
+	private final List<String> channels = new ArrayList<>();
 
 	public List<String> crawl(final String server) throws IOException, IrcException, InterruptedException {
 		LOGGER.debug("Connecting to server: {}", server);

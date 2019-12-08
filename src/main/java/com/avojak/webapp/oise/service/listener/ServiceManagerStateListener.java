@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Implementation of {@link ServiceManager.Listener} to report on the state transitions of the service manager.
  */
+@SuppressWarnings("UnstableApiUsage")
 public class ServiceManagerStateListener extends ServiceManager.Listener {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceManagerStateListener.class);

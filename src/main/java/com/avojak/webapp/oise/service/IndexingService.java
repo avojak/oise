@@ -1,7 +1,6 @@
 package com.avojak.webapp.oise.service;
 
 import com.avojak.webapp.oise.event.ServerCrawlCompleteEvent;
-import com.avojak.webapp.oise.model.ChannelListing;
 import com.avojak.webapp.oise.service.runnable.IndexWriterRunnable;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -18,11 +17,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Service to handle indexing of the crawler results.
  */
+@SuppressWarnings("UnstableApiUsage")
 @Service
 public class IndexingService extends AbstractIdleService {
 
@@ -44,20 +43,16 @@ public class IndexingService extends AbstractIdleService {
 	@Subscribe
 	public void onServerCrawlComplete(final ServerCrawlCompleteEvent event) {
 		LOGGER.debug("Received ServerCrawlCompleteEvent for server: {}", event.getServer());
-		addChannelsToIndex(event.getServer(), event.getChannelListings());
-	}
-
-	private void addChannelsToIndex(final String server, final List<ChannelListing> channelListings) {
-		final ListenableFuture<?> future = executorService.submit(indexWriterRunnableFactory.create(server, channelListings));
+		final ListenableFuture<?> future = executorService.submit(indexWriterRunnableFactory.create(event.getServer(), event.getChannelListings()));
 		Futures.addCallback(future, new FutureCallback<Object>() {
 			@Override
 			public void onSuccess(final Object result) {
-				LOGGER.info("Successfully indexed channel listings for server: {}", server);
+				LOGGER.info("Successfully indexed channel listings for server: {}", event.getServer());
 			}
 
 			@Override
 			public void onFailure(final Throwable t) {
-				LOGGER.error("Failed to index channel listings for server: " + server, t);
+				LOGGER.error("Failed to index channel listings for server: " + event.getServer(), t);
 			}
 		}, executorService);
 	}

@@ -1,1 +1,2 @@
 irc.freenode.net
+irc.bsdunix.us

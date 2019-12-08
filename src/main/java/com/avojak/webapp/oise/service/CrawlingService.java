@@ -4,7 +4,6 @@ import com.avojak.webapp.oise.configuration.WebappProperties;
 import com.avojak.webapp.oise.model.ChannelListing;
 import com.avojak.webapp.oise.service.bot.CrawlerBot;
 import com.avojak.webapp.oise.service.function.WebScrapingTransformFunction;
-import com.avojak.webapp.oise.service.runnable.CrawlCallable;
 import com.avojak.webapp.oise.service.callback.ServerCrawlCallback;
 import com.avojak.webapp.oise.service.callback.CrawlerBotCallback;
 import com.avojak.webapp.oise.service.function.ChannelListingTransformFunction;
@@ -13,7 +12,6 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import org.springframework.util.StringUtils;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -73,7 +70,7 @@ public class CrawlingService extends AbstractScheduledService {
 			bot.setVerbose(false);
 
 			// Perform the crawl of the server
-			final ListenableFuture<List<String>> future = executorService.submit(new CrawlCallable(bot, server));
+			final ListenableFuture<List<String>> future = executorService.submit(() -> bot.crawl(server));
 
 			// Cleanup the bot after crawling the server
 			Futures.addCallback(future, new CrawlerBotCallback(bot, server), executorService);

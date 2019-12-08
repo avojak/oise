@@ -28,6 +28,7 @@ import java.util.concurrent.ThreadFactory;
 /**
  * Handles the application configuration.
  */
+@SuppressWarnings("UnstableApiUsage")
 @Configuration
 public class WebappConfiguration {
 

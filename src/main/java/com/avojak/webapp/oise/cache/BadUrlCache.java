@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class BadUrlCache {
 
-	final Set<Url> urls = new HashSet<>();
+	private final Set<Url> urls = new HashSet<>();
 
 	/**
 	 * Insert a new URL into the cache.
