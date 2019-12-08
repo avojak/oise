@@ -68,6 +68,24 @@ curl -X GET http://localhost:8080/api/v1/search?q=uiuc
 
 A webpage for UI-based search is also available at http://localhost:8080. Simply type your query in the search field and hit <kbd>Enter</kbd>, or select the "Search" button.
 
+## Implementation Details
+
+<img src="./assets/architecture.png" />
+
+OISE is implemented with Spring Boot as the application framework, and each key component of the application (crawling IRC servers, indexing channels, and searching the index) is implemented as a Guava service.
+
+### Services
+
+#### Crawling Service
+
+
+
+#### Indexing Service
+
+#### Search Service
+
+### Configuration
+
 <hr>
 
 <small>OISE was developed to satisfy the Final Project requirement for [CS410: Text Information Systems](https://cs.illinois.edu/courses/profile/CS410) at the [University of Illinois at Urbana-Champaign](https://cs.illinois.edu/)</small>
