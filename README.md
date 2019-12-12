@@ -36,7 +36,7 @@ $ docker run \
 
 If you would like to customize the list of servers that are indexed, you can mount your own server list.
 
-For example, a much shorter file (servers.txt) has been provided in this repository:
+**For demonstration purposes, a much shorter file (servers.txt) has been provided in this repository:**
 ```
 irc.freenode.net
 irc.bsdunix.us
