@@ -47,7 +47,7 @@ $ docker run \
     -it \
     --name oise \
     -v lucene-index:/lucene-index \
-    -v <working_directory>/oise/servers.txt:/servers.txt \
+    -v <full_working_directory_path>/oise/servers.txt:/servers.txt \
     -p 8080:8080 \
     avojak/oise:latest
 ```
