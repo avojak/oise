@@ -76,6 +76,15 @@ hit <kbd>Enter</kbd>, or select the "Search" button.
 OISE is implemented with Spring Boot as the application framework, and each key component of the application (crawling 
 IRC servers and indexing channels) is implemented as a Guava service.
 
+### Technologies Used
+
+- [Apache Lucene](https://lucene.apache.org/) (tokenizing, indexing, scoring)
+- [LinkedIn URL Detector](https://github.com/linkedin/URL-Detector) (URL detection)
+- [Pircbot](www.jibble.org/pircbot.php) (IRC bot)
+- [Jsoup](https://jsoup.org/) (webpage parsing)
+- [Spring Boot](https://spring.io/projects/spring-boot) (application framework)
+- [Docker](https://www.docker.com/) (portable distribution)
+
 ### Services
 
 All services are started in the background when the application starts (see: `ApplicationRunner`).
