@@ -44,6 +44,10 @@ public class WebappConfiguration {
 	@Value("${oise.scraper.max.threads}")
 	private int maxScraperThreads;
 
+	/**
+	 * Creates the WebappProperties bean.
+	 * @return The properties.
+	 */
 	@Bean
 	public WebappProperties webappProperties() {
 		final List<String> servers = new ArrayList<>();
@@ -63,29 +67,39 @@ public class WebappConfiguration {
 		return new WebappProperties(servers, Paths.get(indexDirectory).toString());
 	}
 
+	/**
+	 * Creates the executor service for use by the {@link com.avojak.webapp.oise.service.CrawlingService}.
+	 * @return the {@link ListeningExecutorService}.
+	 */
 	@Bean(name = "CrawlerExecutorService")
 	public ListeningExecutorService crawlerExecutorService() {
 		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("crawler-%d").build();
 		return MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(maxCrawlerThreads, threadFactory));
 	}
 
+	/**
+	 * Creates the executor service for use by the {@link com.avojak.webapp.oise.service.IndexingService}.
+	 * @return the {@link ListeningExecutorService}.
+	 */
 	@Bean(name = "IndexerExecutorService")
 	public ListeningExecutorService indexerExecutorService() {
 		// This has to be a single thread because the IndexWriter creates a lock on the index
 		return MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
 	}
 
-	@Bean(name = "ScraperExecutorService")
-	public ListeningExecutorService scraperExecutorService() {
-		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("scraper-%d").build();
-		return MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(maxScraperThreads, threadFactory));
-	}
-
+	/**
+	 * Creates the event bus bean for communication across services.
+	 * @return The {@link EventBus}.
+	 */
 	@Bean
 	public EventBus eventBus() {
 		return new EventBus();
 	}
 
+	/**
+	 * Create and configure the REST client.
+	 * @return The {@link RestTemplate}.
+	 */
 	@Bean
 	public RestTemplate restTemplate() {
 		int timeout = 5000; // Timeout in milliseconds
@@ -94,16 +108,15 @@ public class WebappConfiguration {
 		return new RestTemplate();
 	}
 
+	/**
+	 * Create and configure the index writer.
+	 * @return The {@link IndexWriter}.
+	 */
 	@Bean
 	public IndexWriter indexWriter(final WebappProperties properties) throws Exception {
 		final IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
 		config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
 		return new IndexWriter(FSDirectory.open(new File(properties.getIndexDirectory()).toPath()), config);
-	}
-
-	@Bean
-	public BadUrlCache badUrlCache() {
-		return new BadUrlCache();
 	}
 
 }

@@ -31,6 +31,9 @@ public class ApplicationRunner implements CommandLineRunner {
 	@Autowired
 	private IndexingService indexingService;
 
+	/**
+	 * Start all of the services.
+	 */
 	@Override
 	public void run(final String... args) throws Exception {
 		Set<Service> services = new HashSet<>();

@@ -35,8 +35,10 @@ public class ScrapingCallable implements Callable<ChannelListing> {
 
 	@Override
 	public ChannelListing call() {
+		// Detect all URLs in the topic
 		final UrlDetector detector = new UrlDetector(originalListing.getTopic(), UrlDetectorOptions.Default);
 		final List<Url> urls = detector.detect();
+		// Scrape the content from each URL and build up the full URL content over all pages
 		final StringBuilder listingUrlContentBuilder = new StringBuilder();
 		for (final Url url : urls) {
 			if (badUrlCache.contains(url)) {
@@ -52,6 +54,7 @@ public class ScrapingCallable implements Callable<ChannelListing> {
 				// TODO: Maybe choose some specific header attributes to look for as well?
 				listingUrlContentBuilder.append(sb.toString());
 			} catch (final IOException e) {
+				// Don't attempt to scrape this URL again
 				badUrlCache.insert(url);
 			}
 		}

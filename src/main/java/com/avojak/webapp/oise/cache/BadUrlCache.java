@@ -1,6 +1,7 @@
 package com.avojak.webapp.oise.cache;
 
 import com.linkedin.urls.Url;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Models a cache of URLs which are found to be invalid and should not be scraped.
  */
+@Component
 public class BadUrlCache {
 
 	private final Set<Url> urls = new HashSet<>();

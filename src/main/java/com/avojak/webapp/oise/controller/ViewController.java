@@ -24,12 +24,18 @@ public class ViewController {
 	@Autowired
 	private SearchService searchService;
 
+	/**
+	 * Defines the UI endpoint for accessing the OISE homepage.
+	 */
 	@GetMapping("")
 	public String index(final Model model) {
 		model.addAttribute("title", "OISE | Open IRC Search Engine");
 		return "search";
 	}
 
+	/**
+	 * Defines the UI endpoint for accessing the search page with an optional query.
+	 */
 	@GetMapping("results")
 	public String searchResults(@RequestParam("q") String query, final Model model) {
 		// Send empty queries back to the search page

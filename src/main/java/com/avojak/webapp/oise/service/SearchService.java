@@ -50,6 +50,7 @@ public class SearchService {
 		}
 
 		final Analyzer analyzer = new StandardAnalyzer();
+		// Only the channel, topic, and urlContent fields contain textual data relevant to the search
 		final QueryParser queryParser = new MultiFieldQueryParser(new String[]{ "channel", "topic", "urlContent" }, analyzer);
 		final Query query = queryParser.parse(rawQuery);
 		final ScoreDoc[] scoreDocs = indexSearcher.search(query, 10, Sort.RELEVANCE, true).scoreDocs;
@@ -60,7 +61,7 @@ public class SearchService {
 			final String channel = document.get("channel");
 			final String topic = document.get("topic");
 			final String urlContent = document.get("urlContent");
-			final int users = Integer.valueOf(document.get("users"));
+			final int users = Integer.parseInt(document.get("users"));
 			searchResults.add(new SearchResult(server, channel, topic, urlContent, users, scoreDoc));
 		}
 		return searchResults;

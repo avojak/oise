@@ -21,6 +21,9 @@ public class CrawlerBot extends PircBot {
 	private final AtomicBoolean isCrawling = new AtomicBoolean(false);
 	private final List<String> channels = new ArrayList<>();
 
+	/**
+	 * "Crawl" the given IRC server for a listing of channels that it hosts.
+	 */
 	public List<String> crawl(final String server) throws IOException, IrcException, InterruptedException {
 		LOGGER.debug("Connecting to server: {}", server);
 		connect(server);
@@ -32,6 +35,9 @@ public class CrawlerBot extends PircBot {
 		return channels;
 	}
 
+	/**
+	 * Handle responses by the IRC server to the messages sent by the bot.
+	 */
 	@Override
 	protected void onServerResponse(int code, String response) {
 		switch (code) {

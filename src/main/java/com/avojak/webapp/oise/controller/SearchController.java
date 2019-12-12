@@ -20,6 +20,11 @@ public class SearchController {
 	@Autowired
 	private SearchService searchService;
 
+	/**
+	 * Defines the REST endpoint for searching.
+	 * @param query The search query.
+	 * @return The list of {@link SearchResult} objects.
+	 */
 	@GetMapping(value = "/api/v1/search")
 	public List<SearchResult> searchV1(@RequestParam("q") String query) {
 		try {

@@ -34,6 +34,9 @@ public class CrawlerBotCallback implements FutureCallback<List<String>> {
 		disposeBot();
 	}
 
+	/**
+	 * Attempt to cleanly dispose of the bot.
+	 */
 	private void disposeBot() {
 		bot.disconnect();
 		LOGGER.trace("Disconnected bot {} from {}", bot.hashCode(), server);
