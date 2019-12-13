@@ -88,6 +88,16 @@ public class WebappConfiguration {
 	}
 
 	/**
+	 * Creates the executor service for use by the {@link com.avojak.webapp.oise.service.function.WebScrapingTransformFunction}.
+	 * @return the {@link ListeningExecutorService}.
+	 */
+	@Bean(name = "ScraperExecutorService")
+	public ListeningExecutorService scraperExecutorService() {
+		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("scraper-%d").build();
+		return MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(maxScraperThreads, threadFactory));
+	}
+
+	/**
 	 * Creates the event bus bean for communication across services.
 	 * @return The {@link EventBus}.
 	 */
